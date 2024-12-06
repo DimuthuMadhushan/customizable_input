@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class FloatingTextField extends StatefulWidget {
+class FloatingPassworTextField extends StatefulWidget {
   final String labelText;
   final String? initialValue;
   final String? errorText;
@@ -21,8 +21,9 @@ class FloatingTextField extends StatefulWidget {
   final Color? backGroundColor;
   final double? labelTextFontSize;
   final double? textFontSize;
+  final Color? iconColor;
 
-  const FloatingTextField(
+  const FloatingPassworTextField(
       {super.key,
       required this.labelText,
       this.initialValue,
@@ -41,17 +42,20 @@ class FloatingTextField extends StatefulWidget {
       this.focusTextColor,
       this.backGroundColor,
       this.labelTextFontSize,
-      this.textFontSize});
+      this.textFontSize,
+      this.iconColor});
 
   @override
   // ignore: library_private_types_in_public_api
-  _FloatingTextFieldState createState() => _FloatingTextFieldState();
+  _FloatingPassworTextFieldState createState() =>
+      _FloatingPassworTextFieldState();
 }
 
-class _FloatingTextFieldState extends State<FloatingTextField> {
+class _FloatingPassworTextFieldState extends State<FloatingPassworTextField> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
   bool _isFocused = false;
+  bool _obscureText = true;
 
   @override
   void initState() {
@@ -71,6 +75,12 @@ class _FloatingTextFieldState extends State<FloatingTextField> {
     _controller.dispose();
     _focusNode.dispose();
     super.dispose();
+  }
+
+  void _toggleVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
   }
 
   @override
@@ -99,35 +109,51 @@ class _FloatingTextFieldState extends State<FloatingTextField> {
               width: widget.borderWidth ?? 1.0,
             ),
           ),
-          child: TextField(
-            controller: _controller,
-            focusNode: _focusNode,
-            onChanged: widget.onChanged,
-            enabled: widget.isEnabled,
-            decoration: InputDecoration(
-              labelText: widget.labelText,
-              labelStyle: GoogleFonts.lato(
-                textStyle: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: widget.labelTextFontSize ?? 12,
-                  color: _isFocused
-                      ? widget.focusLabelTextColor ?? const Color(0xFF666666)
-                      : widget.labelTextColor ?? const Color(0xFFA8A8A8),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _controller,
+                  obscureText: _obscureText,
+                  focusNode: _focusNode,
+                  onChanged: widget.onChanged,
+                  enabled: widget.isEnabled,
+                  decoration: InputDecoration(
+                    labelText: widget.labelText,
+                    labelStyle: GoogleFonts.lato(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: widget.labelTextFontSize ?? 12,
+                        color: _isFocused
+                            ? widget.focusLabelTextColor ??
+                                const Color(0xFF666666)
+                            : widget.labelTextColor ?? const Color(0xFFA8A8A8),
+                      ),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    errorBorder: InputBorder.none,
+                    border: InputBorder.none,
+                  ),
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: widget.textFontSize ?? 14,
+                      color: widget.isEnabled
+                          ? widget.focusTextColor ?? const Color(0xFF1B1C1D)
+                          : widget.textColor ?? const Color(0xFFA8A8A8),
+                    ),
+                  ),
                 ),
               ),
-              floatingLabelBehavior: FloatingLabelBehavior.auto,
-              errorBorder: InputBorder.none,
-              border: InputBorder.none,
-            ),
-            style: GoogleFonts.lato(
-              textStyle: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: widget.textFontSize ?? 14,
-                color: widget.isEnabled
-                    ? widget.focusTextColor ?? const Color(0xFF1B1C1D)
-                    : widget.textColor ?? const Color(0xFFA8A8A8),
-              ),
-            ),
+              if (_isFocused)
+                IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                    color: widget.iconColor ?? Colors.grey,
+                  ),
+                  onPressed: _toggleVisibility,
+                ),
+            ],
           ),
         ),
         SizedBox(
