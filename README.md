@@ -1,39 +1,64 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Customizable Inputs
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Customizable Inputs is a versatile Flutter library that provides customizable input fields to fit a variety of use cases. Designed with flexibility and ease of use in mind, it enables developers to create input forms tailored to their application's unique requirements.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Feature 1: Floating Text Field.
+- Feature 2: Floating Password Input Field
 
-## Getting started
+## Getting Started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use this package, add it to your `pubspec.yaml` file:
 
-## Usage
+```yaml
+dependencies:
+  customizable_inputs: ^1.0.2
+```
+## Example Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Here's an example of how to use the `FloatingPasswordTextField` widget:
 
 ```dart
-const like = 'sample';
+import 'package:flutter/material.dart';
+import 'package:customizable_inputs/customizable_inputs.dart';
+
+class ExampleScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Example Usage')),
+      body: Center(
+        child: FloatingPasswordTextField(
+          isEnabled: true,
+          labelText: "Password",
+          height: 40,
+          width: 300,
+          backGroundColor: Colors.amber,
+          focusedBorderColor: Colors.cyan,
+          onChanged: (value) {
+            print("Password input: $value");
+          },
+          iconColor: Colors.green,
+        ),
+      ),
+    );
+  }
+}
 ```
+## FloatingPasswordTextField Properties
+- isEnabled: Enable or disable the input field (bool).
 
-## Additional information
+- labelText: Set the floating label text (String).
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+- height: Set the height of the input field (double).
+
+- width: Set the width of the input field (double).
+
+- backGroundColor: Set the background color of the input field (Color).
+
+- focusedBorderColor: Set the border color when focused (Color).
+
+- onChanged: Callback that receives the current input value (Function(String)).
+
+- iconColor: Set the color of the visibility toggle icon (Color).
